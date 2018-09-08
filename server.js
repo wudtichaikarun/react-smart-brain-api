@@ -3,29 +3,35 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const knex = require('knex');
+const moregan = require('morgan');
 
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 
+console.log(process.env.POSTGRES_USER);
+console.log(process.env.POSTGRES_PASSWORD);
+console.log(process.env.POSTGRES_DB);
 const db = knex({
   client: 'pg',
   connection: {
-    host: '127.0.0.1',
-    user: '',
-    password: '',
-    database: 'smart-brain'
+    host: process.env.POSTGRES_HOST,
+    user: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    database: process.env.POSTGRES_DB
   }
 });
 
 const app = express();
 
+app.use(moregan('combined'));
 app.use(cors());
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-  res.send(database.users);
+  // res.send(database.users);
+  res.send('<h1>Hello I am romantic');
 });
 app.post('/signin', signin.handleSignin(db, bcrypt));
 app.post('/register', (req, res) => {
