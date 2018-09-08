@@ -10,17 +10,16 @@ const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 
-console.log(process.env.POSTGRES_USER);
-console.log(process.env.POSTGRES_PASSWORD);
-console.log(process.env.POSTGRES_DB);
+// console.log(process.env.POSTGRES_URI);
 const db = knex({
   client: 'pg',
-  connection: {
-    host: process.env.POSTGRES_HOST,
-    user: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
-    database: process.env.POSTGRES_DB
-  }
+  connection: process.env.POSTGRES_URI
+  // connection: {
+  //   host: process.env.POSTGRES_HOST,
+  //   user: process.env.POSTGRES_USER,
+  //   password: process.env.POSTGRES_PASSWORD,
+  //   database: process.env.POSTGRES_DB
+  // }
 });
 
 const app = express();
@@ -30,11 +29,11 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-  // res.send(database.users);
-  res.send('<h1>Hello I am romantic');
+  res.send(database.users);
 });
 app.post('/signin', signin.handleSignin(db, bcrypt));
 app.post('/register', (req, res) => {
+  console.log(req.body);
   register.handleRegister(req, res, db, bcrypt);
 });
 app.get('/profile/:id', (req, res) => {

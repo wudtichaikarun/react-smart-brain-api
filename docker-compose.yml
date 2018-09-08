@@ -9,10 +9,12 @@ services:
     working_dir: /usr/src/smart-brain-api
     # .env variable in container
     environment:
-      POSTGRES_USER: ro
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: smart-brain-docker
-      POSTGRES_HOST: postgres
+      POSTGRES_URI: postgres://admin:password@postgres:5432/smart-brain-docker
+      # วิธีที่ 2
+      # POSTGRES_USER: admin
+      # POSTGRES_PASSWORD: password
+      # POSTGRES_DB: smart-brain-docker
+      # POSTGRES_HOST: postgres
     links:
       # service link name
       - postgres
@@ -24,10 +26,11 @@ services:
   # Postgres db
   postgres:
     environment:
-      POSTGRES_USER: ro
-      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
       POSTGRES_DB: smart-brain-docker
       POSTGRES_HOST: postgres
-    image: postgres
+      POSTGRES_URL: postgres://admin:password@postgres:5432/smart-brain-docker
+    build: ./postgres
     ports:
       - '5432:5432'
