@@ -4,8 +4,10 @@ services:
   # Backend API use image nodejs from Dockerfile
   smart-brain-api:
     container_name: backend
+    # Dockerfile path for backend api (nodejs)
     build: ./
     command: npm start
+    # :come from Dockerfile
     working_dir: /usr/src/smart-brain-api
     # .env variable in container
     environment:
@@ -19,8 +21,10 @@ services:
       # service link name
       - postgres
     ports:
+      # localport:dockerport
       - '3000:3000'
     volumes:
+      # localpath:dockerpath
       - ./:/usr/src/smart-brain-api
 
   # Postgres db
@@ -31,6 +35,7 @@ services:
       POSTGRES_DB: smart-brain-docker
       POSTGRES_HOST: postgres
       POSTGRES_URL: postgres://admin:password@postgres:5432/smart-brain-docker
+    # Dockerfile path for postgres
     build: ./postgres
     ports:
       - '5432:5432'
