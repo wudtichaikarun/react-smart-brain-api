@@ -31,9 +31,13 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => {
   res.send(database.users);
 });
-app.post('/signin', signin.handleSignin(db, bcrypt));
+// sintax sugar ให้ผลเหมือนกันกับ method อื่นแค่เขียนต่างกัน
+// app.post('/signin', signin.handleSignin(db, bcrypt));
+app.post(
+  '/signin',
+  signin.signinAuthentication(db, bcrypt)
+);
 app.post('/register', (req, res) => {
-  console.log(req.body);
   register.handleRegister(req, res, db, bcrypt);
 });
 app.get('/profile/:id', (req, res) => {
